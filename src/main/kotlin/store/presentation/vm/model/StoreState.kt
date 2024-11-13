@@ -4,6 +4,7 @@ import store.domain.model.output.OutputRules
 import store.domain.model.product.Products
 import store.domain.model.promotion.Promotions
 import store.domain.model.receipt.GiftReceipt
+import store.domain.model.receipt.InformationForMakeReceipt
 import store.domain.model.receipt.PaymentReceipt
 import store.presentation.event.UiEvent
 
@@ -24,6 +25,14 @@ data class StoreState(
             "\n${OutputRules.WELCOME}\n${this.products.makeCurrentStockGuideMessage()}"
         )
     )
+
+    fun toReceiptInfo(): InformationForMakeReceipt{
+        return InformationForMakeReceipt(
+            this.paymentReceipt,
+            this.giftReceipt,
+            this.membershipApply
+        )
+    }
 
     companion object {
         fun create() = StoreState(
