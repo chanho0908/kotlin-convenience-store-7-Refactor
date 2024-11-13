@@ -48,16 +48,14 @@ class ViewModel(
 
     fun processOrder(order: String) {
         val products = _state.products
-        checkOrderValidationUseCase(order = order, products = products)
-        onCompleteCheckOrderValidation(order)
+        onCompleteCheckOrderValidation(checkOrderValidationUseCase(order, products))
         finalizeState()
     }
 
-    private fun onCompleteCheckOrderValidation(order: String) {
-        val extractedOrders = extractOrdersUseCase(order)
+    private fun onCompleteCheckOrderValidation(order: Map<String, Int>) {
         val newOrders = Orders(
-            extractedOrders.map {
-                Order(name = it.first, quantity = it.second, promotion = NoPromotion)
+            order.map {
+                Order(name = it.key, quantity = it.value, promotion = NoPromotion)
             }
         )
         _state = _state.copy(orders = newOrders)

@@ -28,8 +28,7 @@ class DependencyInjector {
     private fun injectViewModel(): ViewModel {
         return ViewModel(
             injectProductRepository(),
-            CheckOrderValidationUseCase(),
-            ExtractOrdersUseCase(),
+            CheckOrderValidationUseCase(ExtractOrdersUseCase()),
             GetInProgressPromotionUseCase(injectPromotionRepository()),
             ValidateYesNoInputUseCase(),
             MakeOutReceiptUseCase()
