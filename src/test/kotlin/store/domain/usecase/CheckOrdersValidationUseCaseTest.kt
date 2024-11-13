@@ -16,13 +16,15 @@ class CheckOrdersValidationUseCaseTest {
 
     private lateinit var products: Products
     private lateinit var promotions: Promotions
+    private lateinit var extractOrdersUseCase: ExtractOrdersUseCase
     private lateinit var checkOrderValidationUseCase: CheckOrderValidationUseCase
 
     @BeforeEach
     fun setUp() {
         products = ProductRepositoryImpl(ProductDataSource()).getProduct()
         promotions = PromotionRepositoryImpl(PromotionDataSource()).getPromotion()
-        checkOrderValidationUseCase = CheckOrderValidationUseCase()
+        extractOrdersUseCase = ExtractOrdersUseCase()
+        checkOrderValidationUseCase = CheckOrderValidationUseCase(extractOrdersUseCase)
     }
 
     @Test
@@ -61,6 +63,14 @@ class CheckOrdersValidationUseCaseTest {
     fun `재고가 부족할 때 NOT_ENOUGH_STOCK 예외가 발생한다`() {
         Assertions.assertThatThrownBy {
             checkOrderValidationUseCase("[콜라-100]", products)
+        }.isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessage("${Exception.NOT_ENOUGH_STOCK}")
+    }
+
+    @Test
+    fun `중복_상품_입력시 재고가 부족할 때 NOT_ENOUGH_STOCK 예외가 발생한다`() {
+        Assertions.assertThatThrownBy {
+            checkOrderValidationUseCase("[콜라-5],[콜라-5],[콜라-5],[콜라-5],[콜라-5]", products)
         }.isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("${Exception.NOT_ENOUGH_STOCK}")
     }
