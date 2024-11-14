@@ -1,6 +1,7 @@
 package store.domain.model.receipt
 
 import store.domain.model.output.OutputRules
+import store.domain.model.output.OutputRules.Companion.recipePromotionFormat
 
 data class GiftReceipt(
     val items: MutableMap<String, Int>,
@@ -24,5 +25,11 @@ data class GiftReceipt(
     fun addNotReceivedPromotion(idx: Int){
         val notReceivedPromotion = this.notReceivedPromotion[idx]
         items[notReceivedPromotion] = items.getOrDefault(notReceivedPromotion, 0) + 1
+    }
+
+    fun formatGiftReceipt(): String {
+        return this.items.entries.joinToString("\n") { (name, quantity) ->
+            recipePromotionFormat(name, quantity)
+        }
     }
 }
