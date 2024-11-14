@@ -35,11 +35,12 @@ enum class OutputRules(private val msg: String) {
 
     companion object {
         fun productFormat(product: ProductItem): String {
+            val promotion = if (product.promotion == null) "" else "${product.promotion}"
             return PRODUCT.msg.format(
                 product.name,
                 product.price,
                 product.quantity,
-                product.promotion
+                promotion
             ).trim()
         }
 

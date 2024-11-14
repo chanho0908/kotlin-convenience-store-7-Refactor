@@ -28,7 +28,7 @@ fun List<String>.toProductResponse(): ProductResponse {
 
     val quantity = if (this[PRODUCT_QUANTITY.getIndex()] == "0") OutputRules.OUT_OF_STOCK.toString()
     else this[PRODUCT_QUANTITY.getIndex()] + STOCK_UNIT.toString()
-    val promotion = if (this[PRODUCT_PROMOTION.getIndex()] == "null") ""
+    val promotion = if (this[PRODUCT_PROMOTION.getIndex()] == "null") null
     else this[PRODUCT_PROMOTION.getIndex()]
 
     return ProductResponse(name, price, quantity, promotion)
