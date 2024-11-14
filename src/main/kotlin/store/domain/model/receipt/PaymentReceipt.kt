@@ -17,6 +17,10 @@ data class PaymentReceipt(
         return null
     }
 
+    fun getOriginalPrice(productName: String): Int {
+        return items.find { it.name == productName }?.originPrice ?: 0
+    }
+
     fun removeFromShortageStock(productName: String): PaymentReceipt {
         val shortageStockAmount = this.shortageStock[productName] ?: 0
         val updateItems = this.items.map { item ->
